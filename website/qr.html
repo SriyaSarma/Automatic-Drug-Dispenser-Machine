@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicine Shopping Cart</title>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      text-align: center;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    #cart {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label, input, select, button {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #f9f9f9;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+    }
+
+    #qrcode {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Medicine Shopping Cart</h1>
+
+  <div id="cart">
+    <label for="medicineSelect">Select Medicine:</label>
+    <select id="medicineSelect">
+      <option value="Aspirin">Aspirin</option>
+      <option value="Ibuprofen">Ibuprofen</option>
+      <option value="Paracetamol">Paracetamol</option>
+      <option value="Antacid">Antacid</option>
+      <!-- Add more options as needed -->
+    </select>
+
+    <label for="quantityInput">Quantity:</label>
+    <input type="number" id="quantityInput" placeholder="Enter quantity" min="1">
+
+    <button onclick="addToCart()">Add to Cart</button>
+
+    <h2>Shopping Cart</h2>
+    <ul id="cartItemsList"></ul>
+  </div>
+
+  <button onclick="generateQRCode()">Generate QR Code</button>
+
+  <div id="qrcode"></div>
+
+  <script>
+    var cartItems = [];
+
+    function addToCart() {
+      var medicineSelect = document.getElementById('medicineSelect');
+      var selectedMedicine = medicineSelect.options[medicineSelect.selectedIndex].value;
+      var quantityInput = document.getElementById('quantityInput').value;
+
+      if (selectedMedicine && quantityInput > 0) {
+        var item = {
+          medicine: selectedMedicine,
+          quantity: parseInt(quantityInput)
+        };
+
+        cartItems.push(item);
+
+        // Clear input fields after adding to cart
+        document.getElementById('quantityInput').value = '';
+
+        updateCartItemsList();
+      } else {
+        alert('Please select a valid medicine and enter quantity.');
+      }
+    }
+
+    function updateCartItemsList() {
+      var cartItemsList = document.getElementById('cartItemsList');
+      cartItemsList.innerHTML = '';
+
+      cartItems.forEach(function(item) {
+        var listItem = document.createElement('li');
+        listItem.textContent = `${item.medicine}  ${item.quantity}`;
+        cartItemsList.appendChild(listItem);
+      });
+    }
+
+    function generateQRCode() {
+      if (cartItems.length > 0) {
+        var cartString = JSON.stringify(cartItems);
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+          text: cartString,
+          width: 128,
+          height: 128
+        });
+
+        // Clear the cart after generating QR code
+        //cartItems = [];
+        //updateCartItemsList();
+      } else {
+        alert('Your cart is empty. Add items before generating QR code.');
+      }
+    }
+  </script>
+</body>
+</html>

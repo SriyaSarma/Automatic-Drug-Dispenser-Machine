@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor or Recorder?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("bck.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center center;
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+        }
+
+        .container {
+            width: 30%;
+            margin: 50px auto 200px; /* Adjusted top margin */
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 10px;
+            height:75px;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: -5px;
+        }
+
+        p {
+            color: #555;
+            margin-bottom: -15px;
+            font-size: larger;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 60%; /* Adjusted width */
+            margin: 20px auto; /* Adjusted margin */
+            margin: auto;
+        }
+
+        .button {
+            padding: 20px 40px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            font-size: x-large;
+
+            
+        }
+
+        .button.doctor {
+            background-color: #e15942;
+            margin-right: 10px;
+            
+        }
+
+        .button.recorder {
+            background-color: #e15942;
+            margin-left: 100px;
+        }
+
+        .button:hover {
+            background-color: #2b7ed7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Who Are You?</h1>
+        <p>Please select your role:</p>
+    </div>
+
+    <div class="button-container">
+        <a href='doctor.html' class="button doctor">Doctor</a>
+        <a href='recorder.html' class="button recorder">Recorder</a>
+    </div>
+
+</body>
+
+</html>
+
+

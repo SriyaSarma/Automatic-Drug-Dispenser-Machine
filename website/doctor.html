@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-pzq9zSfdZcI5OhSFbjeE2uqYsMa5ct4Up8L5N0gqJSN1luVDBxgP83XxmHV3RRz+HTBwF0JBW1qic+5lYR8FfQ==" crossorigin="anonymous" />
+
+    <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            background-image: url('bcg.jpg.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .sidebar {
+            height: 100vh;
+            width: 200px;
+            background-color: #111;
+            overflow-x: hidden;
+            padding-top: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar a {
+            padding: 20px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar a i {
+            margin-bottom: 12px;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidebar {
+                padding-top: 15px;
+            }
+
+            .sidebar a {
+                font-size: 18px;
+            }
+        }
+
+        .medicine-list {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .item {
+            border: 1px solid #080546;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+            background-color: rgb(251, 223, 228);
+            position: relative;
+        }
+
+        .quantity {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        #generateQRButton {
+            margin-top: 20px;
+            background-color: navy;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #cart {
+            display: none;
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            z-index: 1;
+            width: 300px;
+        }
+
+        .cartItem {
+            margin-bottom: 10px;
+        }
+
+        #phoneInput {
+            margin-bottom: 10px;
+        }
+
+        #checkPrescriptionButton {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #prescriptionForm {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        #prescriptionForm label,
+        #prescriptionForm input,
+        #prescriptionForm button,
+        #prescriptionList {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        #prescriptionList .prescription-item {
+            border: 1px solid #080546;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: rgb(251, 223, 228);
+            position: relative;
+        }
+
+        #prescriptionList button {
+            background-color: crimson;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        #patientname{
+            font-size: large;
+        }
+        #add,#printPrescriptionButton{
+           
+            background-color: #ffffff;
+        }
+        #add:hover,#printPrescriptionButton:hover{
+            background-color: rgb(129, 220, 243);
+        }
+        #printPrescriptionButton{
+            height:50px;
+            width:150px;
+        }
+        
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #prescriptionList,
+            #prescriptionList * {
+                visibility: visible;
+            }
+
+            #prescriptionList {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+        /* styles.css */
+h2, p, ul li {
+    font-family: 'Times New Roman', serif;
+
+
+ /* Replace 'Arial' with your preferred font family */
+}
+
+h1 {
+    margin-top: 100px;
+    color: #0b2f49;
+    font-size: 50px;
+}
+
+p {
+    
+    color: #1e030d;
+    font-size: 25px;
+}
+
+h2 {
+    color: #0b2f49;
+    font-size: 50px;
+}
+
+ul li {
+    color: #333333;
+    font-size: 20px;
+    margin-top: 25px;
+}
+p1{
+    color: #080546;
+    font-size: 20px;
+}
+
+
+
+
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <a href="javascript:void(0);" onclick="showHomeScreen()">
+            <i class="fa fa-hospital-o" aria-hidden="true"></i> Home
+        </a>
+        <a href="javascript:void(0);" onclick="showPatientDetails()">
+            <i class="fa fa-fw fa-user"></i> Patient's Details
+        </a>
+        <a href="javascript:void(0);" onclick="showPrescription()">
+            <i class="fa fa-stethoscope" aria-hidden="true"></i> Prescription
+        </a>
+        <a href="javascript:void(0);" onclick="showQRcode()">
+            <i class="fa fa-cart-plus" aria-hidden="true"></i> Medicine Cart
+        </a>
+        <a href="javascript:void(0);" onclick="showContact()">
+            <i class="fa fa-fw fa-envelope"></i> Contact
+        </a>
+        
+
+
+    </div>
+
+    <div class="main" id="mainContent">
+        <!-- Empty Page Initially -->
+    </div>
+
+    
+
+
+    <script>
+        let cart = {};
+
+
+        function showHomeScreen() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+            <h1>Your Health is Our Priority</h1>
+            <p>Welcome to our healthcare service, where we prioritize your well-being. Our team of dedicated professionals is committed to providing you with personalized and quality medical care.</p>
+
+            <h2>Why Choose Us?</h2>
+            <ul>
+                <li>Experienced and Caring Doctors: Our team consists of highly experienced and compassionate doctors across various specialties.</li>
+                <li>Convenient Prescription Services: Easily generate new prescriptions and manage your medications online.</li>
+                <li>Patient-Centric Approach: We focus on understanding your unique needs and providing tailored healthcare solutions.</li>
+                <li>Efficient Old Prescription Retrieval: Access your previous prescriptions quickly for reference and continuity of care.</li>
+                <li>Contact Our Specialized Doctors: Connect with our specialized doctors for expert advice and consultations.</li>
+            </ul>
+            `;
+            const cartDiv = document.getElementById('cart');
+            cartDiv.style.display = 'none';
+        }
+
+        function showQRcode() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+            <h1>Medicine Shopping Cart</h1>
+
+            <label for="medicineSelect">Select Medicine:</label>
+            <select id="medicineSelect">
+            <option value="dolo">dolo</option>
+            <option value="meftal">meftal</option>
+            <option value="ducloflex">ducloflex</option>
+            <option value="cetirizine">cetirizine</option>
+            <option value="azithromycin">azithromycin</option>
+            <!-- Add more options as needed -->
+            </select>
+
+            <label for="quantityInput">Quantity:</label>
+            <input type="number" id="quantityInput" placeholder="Enter quantity" min="1">
+
+            <button onclick="addToCart()">Add to Cart</button>
+
+            <h2>Shopping Cart</h2>
+            <ul id="cartItemsList"></ul>
+
+            <button onclick="generateQRCode()">Generate QR Code</button>
+            <div id="qrcode"></div>
+            <p><a href="mailto:someone@example.com">Send email</a></p>
+            `;
+        }
+        var cartItems = [];
+        
+        function addToCart() {
+            console.log('cartItems:', cartItems);
+            var medicineSelect = document.getElementById('medicineSelect');
+            var selectedMedicine = medicineSelect.options[medicineSelect.selectedIndex].value;
+            var quantityInput = document.getElementById('quantityInput').value;
+            
+            if (selectedMedicine && quantityInput > 0) {
+              
+                var item = {
+                medicine: selectedMedicine,
+                quantity: parseInt(quantityInput)
+                };
+
+                cartItems.push(item);
+               
+                // Clear input fields after adding to cart
+                document.getElementById('quantityInput').value = '';
+
+                updateCartItemsList();
+            } else {
+                alert('Please select a valid medicine and enter quantity.');
+            }
+        }
+
+
+        function updateCartItemsList() {
+            var cartItemsList = document.getElementById('cartItemsList');
+            cartItemsList.innerHTML = '';
+            
+            cartItems.forEach(function(item) {
+                var listItem = document.createElement('li');
+                listItem.textContent = `${item.medicine} ${item.quantity}`;
+
+
+                cartItemsList.appendChild(listItem);
+            });
+        }
+
+        function generateQRCode() {
+           
+            if (cartItems.length > 0) {
+                
+                var cartString = JSON.stringify(cartItems);
+                
+                
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: cartString,
+                width: 300,
+                height: 300
+                });
+             
+                // Clear the cart after generating QR code
+                cartItems = [];
+                updateCartItemsList();
+            } else {
+                alert('Your cart is empty. Add items before generating QR code.');
+            }
+        }
+
+
+
+        function showPatientDetails() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <h1>Patient's Details</h1>
+                <div id="phoneInputContainer">
+                    <label for="phoneInput">Enter Patient's Phone Number:</label>
+                    <input type="text" id="phoneInput" placeholder="e.g., 123-456-7890">
+                    <button onclick="checkPatientDetails()">Submit</button>
+                </div>
+            `;
+            const cartDiv = document.getElementById('cart');
+            cartDiv.style.display = 'none';
+        }
+
+        function checkPatientDetails() {
+            const phoneInput = document.getElementById('phoneInput').value;
+            if (phoneInput.trim() !== "") {
+                // AJAX Request to fetch patient details
+                const xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        // Parse the JSON response
+                        const patientDetails = JSON.parse(xhr.responseText);
+
+                        // Check if details are found
+                        if (patientDetails) {
+                            displayPatientDetails(patientDetails);
+                        } else {
+                            alert("Patient details not found.");
+                        }
+                    }
+                };
+
+                // Send a request to your PHP script
+                xhr.open("POST", "doctor.php", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send('action=fetchPatientDetails&phone_number=' + phoneInput);
+            } else {
+                alert("Please enter a valid phone number.");
+            }
+        }
+
+        function displayPatientDetails(details) {
+            // Handle how you want to display patient details
+            // For example, update the DOM with the fetched data
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <h1>Patient's Details</h1>
+                <p1>Name: ${details.name}</p1>
+                <p1>Age: ${details.age}</p1>
+                <p1>Email: ${details.email}</p1>
+                <p1>Gender: ${details.gender}</p1>
+                <p1>Blood Pressure: ${details.blood_pressure}</p1>
+                <p1>Height: ${details.height}</p1>
+                <p1>Weight: ${details.weight}</p1>
+                <p1>Sugar: ${details.sugar}</p1>
+                <p1>Phone Number: ${details.phone_number}</p1>
+            `;
+        }
+
+        function showContact() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <h1>Contact Us</h1>
+                <p>Feel free to reach out to us for any inquiries or assistance. Our customer support team is here to help you.</p>
+                <div>
+                    <strong>Name:</strong> Dr.Sriya(Cardiologist)
+
+                </div>
+                <div>
+                    <strong>Phone:</strong> +917032880567
+
+                </div>
+                <div>
+                    <strong>Name:</strong> Dr.Reetu(Neurologist)
+                </div>
+                <div>
+                    <strong>Phone:</strong> +919177661097
+                </div>
+                <div>
+                    <strong>Name:</strong> Dr.Ashrith(Pediatrician)
+                </div>
+                <div>
+                    <strong>Phone:</strong> +919182914456
+                </div>
+            `;
+            const cartDiv = document.getElementById('cart');
+            cartDiv.style.display = 'none';
+        }
+
+        function showPrescription() {
+            const mainContent = document.getElementById('mainContent');
+            mainContent.innerHTML = `
+                <h1>Prescription Section</h1>
+                <div>
+                    <label for="patientName" id="patientname">Enter Patient's Name:</label>
+                    <input type="text" id="patientName" required>
+                </div>
+                <form id="prescriptionForm">
+                    <label for="medicineName">Medicine Name:</label>
+                    <input type="text" id="medicineName" required>
+
+                    <label>Timing:</label>
+                    <div>
+                        <input type="checkbox" id="morning" value="morning">
+                        <label for="morning">Morning</label>
+                        <input type="checkbox" id="beforeBreakfast" value="beforeBreakfast">
+                        <label for="beforeBreakfast">Before Breakfast</label>
+                        <input type="checkbox" id="afterBreakfast" value="afterBreakfast">
+                        <label for="afterBreakfast">After Breakfast</label>
+                        </div>
+                        <div>
+                            <input type="checkbox" id="afternoon" value="afternoon">
+                            <label for="afternoon">Afternoon</label>
+                            <input type="checkbox" id="beforeLunch" value="beforeLunch">
+                            <label for="beforeLunch">Before Lunch</label>
+                            <input type="checkbox" id="afterLunch" value="afterLunch">
+                            <label for="afterLunch">After Lunch</label>
+                            </div>
+                            <div>
+
+                            <input type="checkbox" id="evening" value="evening">
+    
+                            <label for="evening">Evening</label>
+    
+                            <input type="checkbox" id="beforeDinner" value="beforeDinner">
+    
+                            <label for="beforeDinner">Before Dinner</label>
+    
+                            <input type="checkbox" id="afterDinner" value="afterDinner">
+    
+                            <label for="afterDinner">After Dinner</label>
+
+                            </div>
+
+
+                    
+                            <label for="quantity">Quantity:</label>
+                    
+                            <input type="number" id="quantity" required>
+
+                    
+                            <button type="button" id="add" onclick="addPrescription()">Add Prescription</button>
+                
+                            </form>
+                
+                            <div id="prescriptionList" class="medicine-list"></div>
+                
+                            <button id="printPrescriptionButton" onclick="printPrescription()">Print Prescription</button>
+                            <p><a href="mailto:someone@example.com">Send email</a></p>
+            
+                            `;
+            
+                            const cartDiv = document.getElementById('cart');
+            
+                            cartDiv.style.display = 'none';
+        
+                        }
+
+    let prescriptions = [];
+
+    function addPrescription() {
+    const medicineName = document.getElementById('medicineName').value;
+    const morning = document.getElementById('morning').checked;
+    const beforeBreakfast = document.getElementById('beforeBreakfast').checked;
+    const afterBreakfast = document.getElementById('afterBreakfast').checked;
+    const afternoon = document.getElementById('afternoon').checked;
+    const beforeLunch = document.getElementById('beforeLunch').checked;
+    const afterLunch = document.getElementById('afterLunch').checked;
+    const evening = document.getElementById('evening').checked;
+    const beforeDinner = document.getElementById('beforeDinner').checked;
+    const afterDinner = document.getElementById('afterDinner').checked;
+    const quantity = document.getElementById('quantity').value;
+
+    if (
+        medicineName.trim() !== "" &&
+        (morning || beforeBreakfast || afterBreakfast || afternoon || beforeLunch || afterLunch || evening || beforeDinner || afterDinner) &&
+        quantity.trim() !== ""
+    ) {
+        const timingArray = [];
+        if (morning) timingArray.push('Morning');
+        if (beforeBreakfast) timingArray.push('Before Breakfast');
+        if (afterBreakfast) timingArray.push('After Breakfast');
+        if (afternoon) timingArray.push('Afternoon');
+        if (beforeLunch) timingArray.push('Before Lunch');
+        if (afterLunch) timingArray.push('After Lunch');
+        if (evening) timingArray.push('Evening');
+        if (beforeDinner) timingArray.push('Before Dinner');
+        if (afterDinner) timingArray.push('After Dinner');
+
+        const prescription = {
+            medicineName,
+            timing: timingArray.join(', '), // Combine selected timings into a string
+            quantity
+        };
+
+        prescriptions.push(prescription);
+        updatePrescriptionList();
+        // Clear the form after adding the prescription
+        document.getElementById('prescriptionForm').reset();
+    } else {
+        alert("Please fill in all the prescription details.");
+    }
+}
+
+function updatePrescriptionList() {
+    const prescriptionListContainer = document.getElementById('prescriptionList');
+    prescriptionListContainer.innerHTML = '';
+
+    prescriptions.forEach((prescription, index) => {
+        const prescriptionItem = document.createElement('div');
+        prescriptionItem.classList.add('prescription-item');
+        prescriptionItem.innerHTML = `
+            <p><strong>Medicine:</strong> ${prescription.medicineName}</p>
+            <p><strong>Timing:</strong> ${prescription.timing}</p>
+            <p><strong>Quantity:</strong> ${prescription.quantity}</p>
+            <button onclick="removePrescription(${index})">Remove</button>
+        `;
+        prescriptionListContainer.appendChild(prescriptionItem);
+    });
+}
+
+
+function removePrescription(index) {
+    prescriptions.splice(index, 1);
+    updatePrescriptionList();
+}
+function printPrescription() {
+    const prescriptionContent = document.getElementById('prescriptionList').innerHTML;
+
+    // Open a new window and write the prescription content
+    const printWindow = window.open('', 'new');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Prescription</title>
+            <link rel="stylesheet" href="doctor.html">
+        </head>
+        <body>
+            ${prescriptionContent}
+                // Optionally, you can include additional scripts for printing customization
+                window.onload = function() {
+                    window.print();
+                    window.onafterprint = function() {
+                        window.close();
+                    };
+                };
+            </>
+        </body>
+        </html>
+    `);
+}
+
+        
+    </script>
+
+</body>
+
+</html>
